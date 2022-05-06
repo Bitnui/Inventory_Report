@@ -1,7 +1,3 @@
-# Read Restock report possibly?
-# Get total stock and * by price (Posiblly overwrite total stock with price)
-# Output price and add up the whole column?
-# Figure out the UI problem (So dad can use it)
 import pandas as pd
 df = pd.read_csv('restock_report.csv')
 
@@ -19,6 +15,7 @@ def sort_by_price(kw,price):
     return df
 
 def subtract_retail(amount,kw):
+    
     df = pd.read_csv(f'{kw}_data.csv')
     df.loc[:, "Price"] = df["Price"].apply(lambda x: x - amount)
     return df 
@@ -42,6 +39,7 @@ def clean(kw):
     os.remove('Total_Price.csv')
 
 def final_filter(kw,retail,wholesale):
+
     df = pd.read_csv(f'{kw}_data.csv')
     sort_by_price(kw,retail).to_csv(f'{kw}_data.csv')
     subtract_retail(wholesale,kw).to_csv(f'{kw}_data.csv')
@@ -70,4 +68,3 @@ def total(kw):
 kw = str(input("What's the keyword? (Melt, Candle, 10 Ounce, 5 Pack)"))
 # Call Function
 total(kw)
-
