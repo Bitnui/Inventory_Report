@@ -11,14 +11,17 @@ def sort_by_kw(kw):
     df = df[df['Product name'].str.contains(kw)]
     df.to_csv(kw + '_data.csv')
 
-def further_filtration(kw):
+def sort_by_price(kw,price):
+
     df = pd.read_csv(f'{kw}_data.csv')
-    df = df[df['Price']
+    df = df.loc[df['Price'] == price]
     df.to_csv(kw + '_data.csv')
+    return df
 
-def subtract_retail(amount,df):
-
+def subtract_retail(amount,kw):
+    df = pd.read_csv(f'{kw}_data.csv')
     df.loc[:, "Price"] = df["Price"].apply(lambda x: x - amount)
+    return df 
 
 def calculate_total(kw):
 
@@ -38,30 +41,33 @@ def clean(kw):
     os.remove(f'{kw}_data.csv')
     os.remove('Total_Price.csv')
 
+def final_filter(kw,retail,wholesale):
+    df = pd.read_csv(f'{kw}_data.csv')
+    sort_by_price(kw,retail).to_csv(f'{kw}_data.csv')
+    subtract_retail(wholesale,kw).to_csv(f'{kw}_data.csv')
+
 def total(kw):
 
     sort_by_kw(kw)
-    df = pd.read_csv(kw + '_data.csv')
+    df = pd.read_csv(f'{kw}_data.csv')
     match kw:
         case 'Melt':
-            subtract_retail(4.99,df)
-            print('Melt')
-            #Further filtration on Melt Data (Based on price)
-            further_filtration()
-            df.to_csv(f'{kw}_data.csv')
+            final_filter(kw,5.99,4.99)
         case 'Candle':
-            subtract_retail(10,df)
-            print('6 oz')
-            df.to_csv(f'{kw}_data.csv')
-        case '10 oz':
-            subtract_retail(14.99,df)
-            df.to_csv(f'{kw}_data.csv')
+            final_filter(kw,14.99,9.99)
+            #final_filter(kw,12.5,7.5)
+            #final_filter(kw,19.99,14.99)
+        case '10 Ounce':
+            final_filter(kw,19.99,14.99)
         case '5 pack':
-            subtract_retail(4.99,df)
+            final_filter(kw,19.99,14.99)
+        
     calculate_total(kw)
-    #clean(kw)
+    clean(kw)
 
 
-
-total('Candle')
+# Ask Question
+kw = str(input("What's the keyword? (Melt, Candle, 10 oz, 5 Pack)"))
+# Call Function
+total(kw)
 
