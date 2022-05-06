@@ -59,7 +59,7 @@ def total(kw):
             #final_filter(kw,19.99,14.99)
         case '10 Ounce':
             final_filter(kw,19.99,14.99)
-        case '5 pack':
+        case '5 Pack':
             final_filter(kw,19.99,14.99)
         
     calculate_total(kw)
@@ -67,7 +67,7 @@ def total(kw):
 
 
 # Ask Question
-kw = str(input("What's the keyword? (Melt, Candle, 10 oz, 5 Pack)"))
+kw = str(input("What's the keyword? (Melt, Candle, 10 Ounce, 5 Pack)"))
 # Call Function
 total(kw)
 
